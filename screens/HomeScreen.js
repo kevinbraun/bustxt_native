@@ -1,20 +1,11 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
+import {StyleSheet} from 'react-native';
+import { Platform } from 'react-native';
+
 import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
-import { MonoText } from '../components/StyledText';
-
-import Container from "react-native-material-ui/src/Container";
-import Toolbar from "react-native-material-ui/src/Toolbar";
+  Container, Content, Header, Body, Title, Item, Input, Icon, Left, Right
+} from 'native-base';
 
 import QueryResultsList from '../components/QueryResultsList'
 
@@ -32,20 +23,26 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <Container>
-        <Toolbar centerElement={'BUStxt'} />
-        <View
-          style={styles.textInputView}>
-          <TextInput style={{margin: 10, fontSize: 32}}
-            value={this.state.text}
-            onChangeText={this.textChange.bind(this)}
-            placeholder={"Enter a stop number"}
-            keyboardType={'numeric'}
-          />
-        </View>
-        <View>
-          <QueryResultsList query={this.state.text} />
-        </View>
+        <Header noLeft>
+          <Left />
+          <Body><Title>BUStxt</Title></Body>
+          <Right />
+        </Header>
 
+
+        <Content
+          style={styles.textInputView}>
+          <Item rounded>
+            <Icon active name='search' />
+            <Input
+              value={this.state.text}
+              onChangeText={this.textChange.bind(this)}
+              placeholder={"Enter a 5-digit stop number..."}
+              keyboardType={'numeric'} />
+          </Item>
+
+          <QueryResultsList query={this.state.text} />
+        </Content>
       </Container>
     );
   }
