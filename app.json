@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "BUStxt",
-    "slug": "bustxt_native",
+    "slug": "bustxt-native",
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": [
@@ -24,7 +24,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.winnipegtransit.bustxt"
+    },
+    "android": {
+      "package": "com.winnipegtransit.bustxt"
     }
   }
 }

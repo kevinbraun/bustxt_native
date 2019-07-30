@@ -2,13 +2,13 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import React, { useState } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
-import { Container, Text } from 'native-base';
+import {Body, Container, Header, Left, Right, Text, Title} from 'native-base';
 
-import HomeScreen from "./screens/HomeScreen";
+import SearchScreen from "./screens/SearchScreen";
 
 
 export default function App(props) {
@@ -26,7 +26,13 @@ export default function App(props) {
     return (
       <Container>
         {Platform.OS === 'android' && <View style={styles.statusBar} />}
-        <HomeScreen />
+        <Header noLeft>
+          <Left />
+          <Body><Title>BUStxt</Title></Body>
+          <Right />
+        </Header>
+
+        <SearchScreen />
       </Container>
     );
   }

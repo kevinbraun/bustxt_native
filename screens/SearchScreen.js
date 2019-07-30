@@ -1,29 +1,26 @@
 import React from 'react';
+import { RefreshControl, StyleSheet, } from 'react-native';
 import {
-  ActivityIndicator,
-  StyleSheet,
-  View,
-} from 'react-native';
-import {
-  List, ListItem, Text, Left, Body, Right
+  Content, List, ListItem, Text, Left, Body, Right, Item, Icon, Input, Label
 } from 'native-base'
 
 import _ from 'lodash';
 import StopScheduleParser from '../lib/StopScheduleParser'
 
-class QueryResultsList extends React.Component {
+class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      query: '',
       loading: false,
       resultData: null,
     }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if((prevProps.query != this.props.query) && (this.props.query != '')) {
-      this.search(this.props.query);
+    if((prevState.query != this.state.query) && (this.state.query != '')) {
+      this.search(this.state.query);
     }
   }
 
@@ -38,14 +35,6 @@ class QueryResultsList extends React.Component {
     } else {
       this.setState({resultData: null})
     }
-  }
-
-  renderLoading() {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={'large'} />
-      </View>
-    )
   }
 
   renderList() {
@@ -79,16 +68,33 @@ class QueryResultsList extends React.Component {
   }
 
   render() {
-    return (this.state.loading ? this.renderLoading() : this.renderList())
+    return (
+      <Content
+        padder
+        contentContainerStyle={styles.searchScreen}
+        refreshControl={
+          <RefreshControl onRefresh={() => this.search(this.state.query)} refreshing={this.state.loading} />
+        }>
+        <Item rounded>
+          <Icon active name='search' />
+          <Input
+            value={this.state.text}
+            onChangeText={(text) => this.setState({query: text})}
+            placeholder={"Enter a 5-digit stop number..."}
+            keyboardType={'numeric'} />
+        </Item>
+
+        {this.renderList()}
+      </Content>
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
+  searchScreen: {
+    margin: 10,
+    padding: 0,
   }
 });
 
-export default QueryResultsList;
+export default SearchScreen;
