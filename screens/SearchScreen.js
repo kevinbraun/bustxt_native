@@ -29,7 +29,7 @@ class SearchScreen extends React.Component {
       this.setState({loading: true});
 
       fetch(`https://api.winnipegtransit.com/v3/stops/${query}/schedule.json?api-key=Xay3Sjnxl58VscDylqO`)
-        .then((response) => response.json())
+        .then((response) => response.clone().json().catch(() => response.text()))
         .then((response) => this.setState({resultData: new StopScheduleParser(response), loading: false}))
         .catch((error) => console.error(error));
     } else {
@@ -38,14 +38,17 @@ class SearchScreen extends React.Component {
   }
 
   renderList() {
-    let stop, schedule;
+    let stop, schedule, error;
 
     if(!_.isEmpty(this.state.resultData)) {
-      stop = this.state.resultData && this.state.resultData.stop();
-      schedule = this.state.resultData && this.state.resultData.schedule();
+      error = this.state.resultData.errorMessage();
+      stop = this.state.resultData.stop();
+      schedule = this.state.resultData.schedule();
     }
 
-    if(stop && schedule) {
+    if(error) {
+      return (<Text>{error}</Text>);
+    } else if(stop && schedule) {
       return (
         <List>
           <ListItem>
@@ -56,7 +59,7 @@ class SearchScreen extends React.Component {
           {schedule.map((ss) => { return(
             <ListItem avatar key={ss.key}>
               <Left><Text>{ss.route.number}</Text></Left>
-              <Body><Text>{ss.route.name}</Text></Body>
+              <Body><Text>{ss.variant.name}</Text></Body>
               <Right><Text>{ss.estimated}</Text></Right>
             </ListItem>
           )})}
