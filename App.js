@@ -2,13 +2,23 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import React, { useState } from 'react';
+import moment from 'moment';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-
 import {Body, Container, Header, Left, Right, Text, Title} from 'native-base';
-
 import SearchScreen from "./screens/SearchScreen";
+
+moment.updateLocale('en', {
+  relativeTime : {
+    future: "in %s",
+    past:   "Due",
+    s  : 'Due',
+    ss : 'Due',
+    m:  "1 min",
+    mm: "%d min",
+  }
+});
 
 
 export default function App(props) {
@@ -25,7 +35,6 @@ export default function App(props) {
   } else {
     return (
       <Container>
-        {Platform.OS === 'android' && <View style={styles.statusBar} />}
         <Header noLeft>
           <Left />
           <Body><Title>BUStxt</Title></Body>
@@ -40,10 +49,10 @@ export default function App(props) {
 
 async function loadResourcesAsync() {
   await Promise.all([
-    Asset.loadAsync([
-      require('./assets/images/robot-dev.png'),
-      require('./assets/images/robot-prod.png'),
-    ]),
+    // Asset.loadAsync([
+    //   require('./assets/images/robot-dev.png'),
+    //   require('./assets/images/robot-prod.png'),
+    // ]),
     Font.loadAsync({
       // This is the font that we are using for our tab bar
       ...Ionicons.font,
@@ -56,7 +65,7 @@ async function loadResourcesAsync() {
   ]);
 }
 
-function handleLoadingError(error: Error) {
+function handleLoadingError(error) {
   // In this case, you might want to report the error to your error reporting
   // service, for example Sentry
   console.warn(error);

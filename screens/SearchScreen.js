@@ -1,11 +1,13 @@
 import React from 'react';
 import { RefreshControl, StyleSheet, } from 'react-native';
 import {
-  Content, List, ListItem, Text, Left, Body, Right, Item, Icon, Input, Label
+  Card, CardItem, Content, List, ListItem, Text, Left, Body, Right, Item, Icon, Input, Label
 } from 'native-base'
-
 import _ from 'lodash';
-import StopScheduleParser from '../lib/StopScheduleParser'
+
+import { API_KEY } from '../config/config';
+import StopScheduleParser from '../services/StopScheduleParser';
+import ScheduledStop from "../components/ScheduledStop";
 
 class SearchScreen extends React.Component {
   constructor(props) {
@@ -25,10 +27,10 @@ class SearchScreen extends React.Component {
   }
 
   search(query) {
-    if(query.match(/\d{5}/)) {
+    if(query.match(/^\d{5}$/)) {
       this.setState({loading: true});
 
-      fetch(`https://api.winnipegtransit.com/v3/stops/${query}/schedule.json?api-key=Xay3Sjnxl58VscDylqO`)
+      fetch(`https://api.winnipegtransit.com/v3/stops/${query}/schedule.json?api-key=${API_KEY}`)
         .then((response) => response.json())
         .then((response) => this.setState({resultData: new StopScheduleParser(response), loading: false}))
         .catch((error) => console.error(error));
@@ -41,26 +43,27 @@ class SearchScreen extends React.Component {
     let stop, schedule;
 
     if(!_.isEmpty(this.state.resultData)) {
-      stop = this.state.resultData && this.state.resultData.stop();
-      schedule = this.state.resultData && this.state.resultData.schedule();
+      stop = this.state.resultData.stop();
+      schedule = this.state.resultData.schedule();
     }
 
     if(stop && schedule) {
       return (
-        <List>
-          <ListItem>
-            <Text>
-              Results for {stop.number} - {stop.name}
-            </Text>
-          </ListItem>
-          {schedule.map((ss) => { return(
-            <ListItem avatar key={ss.key}>
-              <Left><Text>{ss.route.number}</Text></Left>
-              <Body><Text>{ss.route.name}</Text></Body>
-              <Right><Text>{ss.estimated}</Text></Right>
-            </ListItem>
-          )})}
-        </List>
+        <>
+          <Card>
+            <CardItem>
+              <Body>
+                <Text>
+                  Results for {stop.number} - {stop.name}
+                </Text>
+              </Body>
+            </CardItem>
+          </Card>
+
+          <List style={styles.resultList}>
+            {schedule.map((ss) => <ScheduledStop ss={ss} key={ss.key}/> )}
+          </List>
+        </>
       )
     } else {
       return( <List></List> );
@@ -94,6 +97,9 @@ const styles = StyleSheet.create({
   searchScreen: {
     margin: 10,
     padding: 0,
+  },
+  resultList: {
+    marginBottom: 20,
   }
 });
 

@@ -1,0 +1,5 @@
+const API_KEY = 'my-api.winnipegtransit.com-api-key';
+
+export {
+  API_KEY,
+}
