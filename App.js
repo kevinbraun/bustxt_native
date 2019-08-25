@@ -35,9 +35,12 @@ export default function App(props) {
   } else {
     return (
       <Container>
-        <Header noLeft>
+        <Header noLeft
+                style={styles.header}
+                iosBarStyle={'light-content'}
+                androidStatusBarColor={'#064247'} >
           <Left />
-          <Body><Title>BUStxt</Title></Body>
+          <Body><Title style={styles.title}>BUStxt</Title></Body>
           <Right />
         </Header>
 
@@ -78,5 +81,12 @@ function handleFinishLoading(setLoadingComplete) {
 const styles = StyleSheet.create({
   statusBar: {
     height: Constants.statusBarHeight,
+  },
+  header: {
+    backgroundColor: '#064247',
+    color: 'white',
+  },
+  title: {
+    color: 'white',
   }
 });
