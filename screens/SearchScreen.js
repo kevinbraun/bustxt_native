@@ -40,14 +40,16 @@ class SearchScreen extends React.Component {
   }
 
   renderList() {
-    let stop, schedule;
+    let stop, schedule, error;
 
     if(!_.isEmpty(this.state.resultData)) {
       stop = this.state.resultData.stop();
       schedule = this.state.resultData.schedule();
     }
 
-    if(stop && schedule) {
+    if(error) {
+      return (<Text>{error}</Text>);
+    } else if(stop && schedule) {
       return (
         <>
           <Card>

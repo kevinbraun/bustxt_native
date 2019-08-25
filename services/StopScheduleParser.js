@@ -2,12 +2,16 @@ import _ from 'lodash';
 
 export class StopScheduleParser {
   constructor(data) {
-    this.scheduleData = data['stop-schedule'];
-    this.stopInfo = {};
-    this.results = [];
+    if(typeof data === 'object') {
+      this.scheduleData = data['stop-schedule'];
+      this.stopInfo = {};
+      this.results = [];
 
-    this.parseStopInfo();
-    this.parseSchedules();
+      this.parseStopInfo();
+      this.parseSchedules();
+    } else {
+      this.error = data;
+    }
   }
 
   stop() {
@@ -16,6 +20,10 @@ export class StopScheduleParser {
 
   schedule() {
     return this.results;
+  }
+
+  errorMessage() {
+    return this.error;
   }
 
   parseStopInfo() {
