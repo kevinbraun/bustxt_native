@@ -25,6 +25,15 @@ To get started, clone the project, install dependencies with yarn, and then run 
 
 At this point your browser will open a new tab to `localhost:19002`.
 
+## Creating a config file
+
+The application currently ships with a config/config.js.sample file.  Copy this and edit it and fill in a key for POWS:
+
+    cp config/config.js.sample config/config.js
+
+Then, go and edit the new `config/config.js` and replace 'my-api.winnipegtransit.com-api-key' with a POWS API key.
+
+
 ## Getting set up on a "device"
 
 There are a couple of options for running bustxt-native on a device.  The short version - for Android things, just install [Android Studio](https://developer.android.com/studio) and you'll have/be able to get all the tools required.  For iOS, you must be on a Mac, with XCode installed.
